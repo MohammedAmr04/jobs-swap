@@ -59,13 +59,13 @@ const seedJobs = async () => {
     const userCount = await prisma.user.count();
 
     if (userCount === 0) {
-      console.log("No users found. Seeding 10 initial users...");
+      console.log("No users found. Seeding a default user...");
 
       await prisma.user.create({
         data: { email: "john.doe@example.com", password: "0000" },
       });
 
-      console.log("10 users seeded successfully!");
+      console.log("Default user seeded successfully!");
     } else {
       console.log(" Database already has users. Skipping seeding.");
     }

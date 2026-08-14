@@ -1,6 +1,6 @@
-# Nabeh Tech Assessment - Client
+# Jobs Swap - Client
 
-This is the Expo React Native client application for the Nabeh Tech Assessment.
+This is the Expo React Native client for **Jobs Swap**, the Tinder-style job discovery app. Users swipe through job cards — right to apply, left to ignore.
 
 ## Prerequisites
 

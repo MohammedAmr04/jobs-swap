@@ -1,0 +1,50 @@
+// Prisma schema for the jobs-swap backend.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id          Int           @id @default(autoincrement())
+  email       String        @unique
+  password    String
+  applies     AppliedJob[]
+  ignoredJobs IgnoredJob[]
+}
+
+model Job {
+  id          Int          @id @default(autoincrement())
+  title       String
+  description String
+  company     String
+  applies     AppliedJob[]
+  ignoredBy   IgnoredJob[] @relation("JobIgnoredBy")
+}
+
+model AppliedJob {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  jobId     Int
+  appliedAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  job  Job  @relation(fields: [jobId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+  @@unique([userId, jobId])
+}
+
+model IgnoredJob {
+  id     Int @id @default(autoincrement())
+  userId Int
+  jobId  Int
+
+  user User @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  job  Job  @relation("JobIgnoredBy", fields: [jobId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+  @@unique([userId, jobId])
+}

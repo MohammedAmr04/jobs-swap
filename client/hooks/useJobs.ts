@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { Platform } from "react-native";
 import Toast from "react-native-toast-message";
 import { Job } from "../components/JobCard";
@@ -13,11 +13,11 @@ export const useJobs = () => {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-  let isFetching = false;
+  const isFetching = useRef(false);
 
   const fetchJobs = useCallback(async () => {
-    if (isFetching) return;
-    isFetching = true;
+    if (isFetching.current) return;
+    isFetching.current = true;
     setLoading(true);
     try {
       const response = await fetch(`${API_BASE_URL}?userId=${USER_ID}`);
@@ -34,7 +34,7 @@ export const useJobs = () => {
       });
     } finally {
       setLoading(false);
-      isFetching = false;
+      isFetching.current = false;
     }
   }, []);
 

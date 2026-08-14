@@ -4,6 +4,7 @@ import {
   StyleSheet,
   ActivityIndicator,
   FlatList,
+  Text,
 } from "react-native";
 import Toast from "react-native-toast-message";
 import JobCard from "../../components/JobCard";
@@ -15,8 +16,17 @@ const HomeScreen: React.FC = () => {
 
   return (
     <GestureHandlerRootView style={styles.container}>
-      {jobs.length === 0 && loading ? (
-        <ActivityIndicator size="large" color="#007bff" />
+      {loading ? (
+        <View style={styles.center}>
+          <ActivityIndicator size="large" color="#007bff" />
+        </View>
+      ) : jobs.length === 0 ? (
+        <View style={styles.center}>
+          <Text style={styles.emptyTitle}>{"You're all caught up"}</Text>
+          <Text style={styles.emptySubtitle}>
+            No more jobs to swipe. Pull to refresh to check again.
+          </Text>
+        </View>
       ) : (
         <FlatList
           data={jobs}
@@ -24,6 +34,7 @@ const HomeScreen: React.FC = () => {
           contentContainerStyle={{ paddingVertical: 20 }}
           showsVerticalScrollIndicator={false}
           onEndReachedThreshold={0.5}
+          refreshing={loading}
           renderItem={({ item }) => (
             <JobCard
               job={item}
@@ -32,11 +43,6 @@ const HomeScreen: React.FC = () => {
             />
           )}
         />
-      )}
-      {jobs.length === 0 && !loading && (
-        <View style={styles.noJobs}>
-          <ActivityIndicator size="small" color="#007bff" />
-        </View>
       )}
       <Toast />
     </GestureHandlerRootView>
@@ -48,10 +54,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f8f9fa",
   },
-  noJobs: {
-    position: "absolute",
+  center: {
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    padding: 32,
+  },
+  emptyTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 8,
+    textAlign: "center",
+  },
+  emptySubtitle: {
+    fontSize: 15,
+    color: "#666",
+    textAlign: "center",
   },
 });
 

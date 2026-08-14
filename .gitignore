@@ -10,21 +10,14 @@ build/
 .cache/
 
 # --- Environment Variables ---
-.env
-.env.local
 .env.development.local
 .env.test.local
 .env.production.local
 .env*.local
 
 # --- Prisma ---
-prisma
-prisma/
-*/prisma/
-!*/prisma/schema.prisma
-!server/prisma/schema.prisma
-!prisma/schema.prisma
-*/prisma/migrations/
+# The Prisma schema and migrations are tracked in git.
+# Only the generated client is ignored (it is regenerated via `prisma generate`).
 */src/generated/
 
 # --- React Native (Android) ---
@@ -57,7 +50,6 @@ xcuserdata/
 *.db-journal
 
 # --- IDEs / Editors ---
-.vscode/
 .idea/
 .DS_Store
 *.swp
@@ -67,3 +59,4 @@ xcuserdata/
 logs
 *.log
 npm-debug.log*
+config.bat

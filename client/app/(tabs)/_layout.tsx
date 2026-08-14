@@ -1,6 +1,5 @@
 import { Tabs } from "expo-router";
 import React from "react";
-import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { Platform, View } from "react-native";
 import { Home } from "lucide-react-native";

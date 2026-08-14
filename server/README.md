@@ -1,6 +1,6 @@
-# Nabeh Tech Assessment - Server
+# Jobs Swap - Server
 
-This is the Express & Prisma backend for the Nabeh Tech Assessment.
+This is the Express & Prisma backend for **Jobs Swap**, the Tinder-style job discovery app. It exposes a REST API for listing, creating, applying to, and ignoring jobs, and seeds sample data on startup.
 
 ## Prerequisites
 

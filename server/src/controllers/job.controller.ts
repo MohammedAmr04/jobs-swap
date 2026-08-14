@@ -13,6 +13,15 @@ export const createJob = async (
   res: Response,
 ) => {
   const { title, description, company } = req.body;
+
+  if (!title || !description || !company) {
+    return sendResponse(
+      res,
+      400,
+      "title, description and company are required",
+    );
+  }
+
   try {
     const newJob = await prisma.job.create({
       data: { title, description, company },
@@ -24,22 +33,21 @@ export const createJob = async (
 };
 
 export const getJobs = async (
-  req: Request<{}, { userId: string }>,
+  req: Request<{}, {}, {}, { userId?: string }>,
   res: Response,
 ) => {
   const { userId } = req.query;
 
   try {
-    let whereClause = {};
+    const whereClause = userId
+      ? {
+          AND: [
+            { applies: { none: { userId: Number(userId) } } },
+            { ignoredBy: { none: { userId: Number(userId) } } },
+          ],
+        }
+      : undefined;
 
-    if (userId) {
-      whereClause = {
-        AND: [
-          { applies: { none: { userId: Number(userId) } } },
-          { ignoredBy: { none: { userId: Number(userId) } } },
-        ],
-      };
-    }
     const jobs = await prisma.job.findMany({
       where: whereClause,
     });
@@ -49,11 +57,19 @@ export const getJobs = async (
   }
 };
 
-export const ignoreJob = async (req: Request, res: Response) => {
+export const ignoreJob = async (
+  req: Request<{}, {}, { userId?: string; jobId?: string }>,
+  res: Response,
+) => {
   const { userId, jobId } = req.body;
+
+  if (!userId || !jobId) {
+    return sendResponse(res, 400, "userId and jobId are required");
+  }
+
   try {
     await prisma.ignoredJob.create({
-      data: { userId, jobId },
+      data: { userId: Number(userId), jobId: Number(jobId) },
     });
     sendResponse(res, 200, "Job added to ignore list");
   } catch (err) {
